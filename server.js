@@ -38,7 +38,7 @@ app.use(function(req, res, next) {
 //de simples renvois des fichiers statiques
 //du répertoire "./html"
 app.use('/html', express.static(__dirname+"/html"));
-app.use('/res-api/posts', express.static(__dirname+"/html/posts"));
+app.use('/res-api/public/posts', express.static(__dirname+"/html/posts"));
 app.get('/', function(req , res ) {
   res.redirect('/html/index.html');
 });
