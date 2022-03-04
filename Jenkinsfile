@@ -9,7 +9,7 @@ pipeline {
 		}
 		stage('Checkout code') {
 			steps {
-			   ws("/conf-docker/backend-ddc/ddc-api") {
+			   ws("/docker-contents/ddc-api") {
 				  checkout scm
 			   }
 			}
