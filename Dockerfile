@@ -10,7 +10,6 @@ WORKDIR /usr/src/app
 # where available (npm@5+)
 COPY  package*.json  ./
 
-RUN npm install pm2 -g
 RUN npm install
 
 # Bundle app source (src, dist, ...)
@@ -21,5 +20,4 @@ ENV PORT=8231
 ENV MONGODB_URL=mongodb://root:root@mongoDB.host:27017
 
 EXPOSE 8231
-#CMD [ "npm", "start" ]
-CMD [ "pm2-runtime", "server.js" , "--watch" , "--ignore-watch='node_modules'" ]
+CMD [ "npm", "start" ]
