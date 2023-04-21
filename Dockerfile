@@ -1,5 +1,5 @@
-FROM node:16
-# this new image will be create from parent image = node:16 (stable)
+FROM node:18
+# this new image will be create from parent image = node:16 ou :18 (stable)
 
 # Create app directory inside docker image
 WORKDIR /usr/src/app
