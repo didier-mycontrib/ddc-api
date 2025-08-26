@@ -1,8 +1,7 @@
 import mongoose from 'mongoose';
 import ddcDbMongoose from './ddc-db-mongoose.js';
 import genericPromiseMongoose from './generic-promise-mongoose.js';
-var thisDb = ddcDbMongoose.thisDb;
-
+import { readJsonTextFile } from './generic-file-util.js'
 //NB: This is for current entity type ("Devise" or "Customer" or "Product" or ...)
 //NB: thisSchema and ThisPersistentModel should not be exported (private only in this current module)
 var thisSchema;//mongoose Schema (structure of mongo document)
@@ -19,7 +18,40 @@ var ThisPersistentModel; //mongoose Model (constructor of persistent ThisPersist
 
 function initMongooseWithSchemaAndModel () {
 
-    mongoose.Connection = thisDb;
+/**
+ * @openapi
+ * components:
+ *   schemas:
+ *     Ressource:
+ *       type: object
+ *       properties:
+ *         id:
+ *           type: string
+ *           example : 618d53514e0720e69e2e54c8
+ *         titre:
+ *           type: string
+ *           example : image1
+ *         res_fic_name:
+ *           type: string
+ *           example : image1.jpg
+ *         res_type:
+ *           type: string
+ *           example : image ou pdf ou video ou ...
+ *         res_categorie:
+ *           type: string
+ *           example : ressource ou plan ou ...
+ *         date:
+ *           type: string
+ *           example : "2020-02-17"
+ * 
+ *     RessourceArray:
+ *       type: array
+ *       items:
+ *         $ref: "#/components/schemas/Ressource"
+ *
+ */  
+
+    mongoose.Connection = ddcDbMongoose.thisDbFn();
       thisSchema = new mongoose.Schema({
         /* default mongo _id: { type : String , alias : "id" } ,*/
         titre: String,
@@ -38,68 +70,49 @@ function initMongooseWithSchemaAndModel () {
       ThisPersistentModel = mongoose.model('Ressource', thisSchema);
 }
 
-initMongooseWithSchemaAndModel();
+function ThisPersistentModelFn(){
+  if(ThisPersistentModel==null)
+      initMongooseWithSchemaAndModel();
+  return ThisPersistentModel;
+}
 
-function reinit_db(){
-  return new Promise( (resolve,reject)=>{
+async function reinit_db(){
+  try {
       const deleteAllFilter = { }
-      ThisPersistentModel.deleteMany( deleteAllFilter, function (err) {
-        if(err) { 
-          console.log(JSON.stringify(err));
-          reject(err);
-        }
-        (new ThisPersistentModel({ _id : "62139848eb02e0dc09503d4f" ,titre : "plan_spring" , 
-                res_fic_name: "plan_spring.pdf" , res_type : "pdf" , 
-                res_categorie : "plan" , date : "2020-02-17" })).save();
-        (new ThisPersistentModel({ _id : "62139cf0b7c87471f20642b9" ,titre : "plan_angular" , 
-                res_fic_name: "plan_angular.pdf" , res_type : "pdf" , 
-                res_categorie : "plan" , date : "2020-02-17" })).save();
-        (new ThisPersistentModel({ _id : "62139cf0b7c87471f20642bb" ,titre : "cv_D_Defrance_pdf" , 
-                res_fic_name: "cv_D_Defrance.pdf" , res_type : "pdf" , 
-                res_categorie : "cv" , date : "2020-02-17" })).save();
-        (new ThisPersistentModel({ _id : "62139cf0b7c87471f20642bd" ,titre : "cv_D_Defrance_docx" , 
-                res_fic_name: "cv_D_Defrance.docx" , res_type : "document" , 
-                res_categorie : "cv" , date : "2020-02-17" })).save();  
-        (new ThisPersistentModel({ _id : "62139cf0b7c87471f20642bf" ,titre : "didier_jpg" , res_fic_name: "didier.jpg" , res_type : "image" , res_categorie : "ressource" , date : "2020-02-17" })).save();
-        (new ThisPersistentModel({ _id : "62139cf0b7c87471f20642c1" ,titre : "classroom_jpg" , res_fic_name: "classroom.jpg" , res_type : "image" , res_categorie : "ressource" , date : "2020-02-17" })).save();   
-        (new ThisPersistentModel({ _id : "62139cf0b7c87471f20642c3" ,titre : "coffee_jpg" , res_fic_name: "coffee.jpg" , res_type : "image" , res_categorie : "ressource" , date : "2020-02-17" })).save();   
-        (new ThisPersistentModel({ _id : "62139cf0b7c87471f20642c5" ,titre : "didier_vernon_jpg" , res_fic_name: "didier_vernon.jpg" , res_type : "image" , res_categorie : "ressource" , date : "2020-02-17" })).save();
-        (new ThisPersistentModel({ _id : "62139cf0b7c87471f20642c7" ,titre : "laptop_jpg" , res_fic_name: "laptop.jpg" , res_type : "image" , res_categorie : "ressource" , date : "2020-02-17" })).save();   
-        (new ThisPersistentModel({ _id : "62139cf0b7c87471f20642c9" ,titre : "nature_jpg" , res_fic_name: "nature.jpg" , res_type : "image" , res_categorie : "ressource" , date : "2020-02-17" })).save(); 
-        (new ThisPersistentModel({ _id : "62139cf0b7c87471f20642cb" ,titre : "code_jpg" , res_fic_name: "code.jpg" , res_type : "image" , res_categorie : "ressource" , date : "2020-02-17" })).save();
-        (new ThisPersistentModel({ _id : "62139cf0b7c87471f20642cd" ,titre : "modelisation_jpg" , res_fic_name: "modelisationmodelisation.jpg" , res_type : "image" , res_categorie : "ressource" , date : "2020-02-17" })).save();   
-        (new ThisPersistentModel({ _id : "62139cf0b7c87471f20642cf" ,titre : "domaines_competences_jpg" , res_fic_name: "domaines_competences.jpg" , res_type : "image" , res_categorie : "ressource" , date : "2020-02-17" })).save(); 
-        (new ThisPersistentModel({ _id : "62139cf0b7c87471f20642d1" ,titre : "competences_jee_spring_jpg" , res_fic_name: "competences_jee_spring.jpg" , res_type : "image" , res_categorie : "ressource" , date : "2020-02-17" })).save();
-        (new ThisPersistentModel({ _id : "62139cf0b7c87471f20642d3" ,titre : "competences_javascript_jpg" , res_fic_name: "competences_javascript.jpg" , res_type : "image" , res_categorie : "ressource" , date : "2020-02-17" })).save();   
-        (new ThisPersistentModel({ _id : "62139cf0b7c87471f20642d5" ,titre : "competences_devops_jpg" , res_fic_name: "competences_devops.jpg" , res_type : "image" , res_categorie : "ressource" , date : "2020-02-17" })).save(); 
-        (new ThisPersistentModel({ _id : "62139cf0b7c87471f20642d7" ,titre : "competences_transverses_jpg" , res_fic_name: "competences_transverses.jpg" , res_type : "image" , res_categorie : "ressource" , date : "2020-02-17" })).save(); 
-        resolve({action:"ressources collection in database re-initialized"})
-      })
- 
-  });
+      await ThisPersistentModelFn().deleteMany( deleteAllFilter );
+      let entitiesFromFileDataSet = await readJsonTextFile("dataset/default_ressources.json");
+       for(let e of entitiesFromFileDataSet){
+        if(e.id) { e._id = e.id; delete e.id}
+        await  (new ThisPersistentModelFn()(e)).save();
+      }
+      return {action:"ressources collection in database re-initialized"}
+  } catch(ex){
+     console.log(JSON.stringify(ex));
+     throw ex;
+  }  
 }
 
 function findById(id) {
-  return genericPromiseMongoose.findByIdWithModel(id,ThisPersistentModel);
+  return genericPromiseMongoose.findByIdWithModel(id,ThisPersistentModelFn());
 }
 
 //exemple of criteria : {} or { unitPrice: { $gte: 25 } } or ...
 function findByCriteria(criteria) {
-  return genericPromiseMongoose.findByCriteriaWithModel(criteria,ThisPersistentModel);
+  return genericPromiseMongoose.findByCriteriaWithModel(criteria,ThisPersistentModelFn());
 }
 
 function save(entity) {
-  return genericPromiseMongoose.saveWithModel(entity,ThisPersistentModel);
+  return genericPromiseMongoose.saveWithModel(entity,ThisPersistentModelFn());
 }
 
 function updateOne(newValueOfEntityToUpdate) {
-  return genericPromiseMongoose.updateOneWithModel(newValueOfEntityToUpdate,newValueOfEntityToUpdate.id,ThisPersistentModel);
+  return genericPromiseMongoose.updateOneWithModel(newValueOfEntityToUpdate,newValueOfEntityToUpdate.id,ThisPersistentModelFn());
 }
 
 function deleteOne(idOfEntityToDelete) {
-  return genericPromiseMongoose.deleteOneWithModel(idOfEntityToDelete,ThisPersistentModel);
+  return genericPromiseMongoose.deleteOneWithModel(idOfEntityToDelete,ThisPersistentModelFn());
 }
 
 
-export default { ThisPersistentModel ,  reinit_db ,
+export default { ThisPersistentModelFn ,  reinit_db ,
    findById , findByCriteria , save , updateOne ,  deleteOne};

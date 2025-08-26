@@ -5,14 +5,26 @@
   "main": "server.js",
   "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "news_test": "mocha ./test/news-api.spec.js --exit --reporter spec",
+    "res_test": "mocha ./test/res-api.spec.js --exit --reporter spec",
+    "all_tests": "mocha ./test/all-api.spec.js --exit --reporter spec",
     "start": "node server.js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.17.3",
-    "express-fileupload": "^1.3.1",
-    "mongoose": "^6.2.2"
+    "express": "^5.1.0",
+    "express-fileupload": "^1.5.2",
+    "mongoose": "^8.17.1",
+    "passport": "^0.7.0",
+    "passport-keycloak-bearer": "^2.4.1",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.1"
+  },
+  "devDependencies": {
+    "@testcontainers/mongodb": "^11.5.1",
+    "chai": "^5.2.1",
+    "chai-http": "^5.1.2",
+    "mocha": "^11.7.1"
   }
 }
