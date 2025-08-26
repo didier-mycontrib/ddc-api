@@ -134,10 +134,10 @@ apiRouter.route('/res-api/v1/private/upload-ressource')
      else{
       // req.files.fileNameXyz (ici .resFile ) 
       let resFile = req.files.resFile ;
-      let postFolderPath = "./html/posts/";
+      let postFolderPath = "./html/mnt_posts/";
       if(resFile){
           if(ressource.res_type == "image"){
-            postFolderPath = "./html/posts/images/";
+            postFolderPath = "./html/mnt_posts/images/";
           }
           // Use the mv() method to place the file somewhere on your server
           resFile.mv(postFolderPath + resFile.name, function(err) {

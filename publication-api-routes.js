@@ -126,7 +126,7 @@ apiRouter.route('/news-api/v1/private/upload-publication')
       // req.files.fileNameXyz (ici .imageFile et .detailsFile) 
       let imageFile = req.files.imageFile ;
 	  let detailsFile = req.files.detailsFile
-      let postFolderPath = "./html/posts/";
+      let postFolderPath = "./html/mnt_posts/";
       if(imageFile){
           // Use the mv() method to place the file somewhere on your server
           imageFile.mv(postFolderPath +"/images/"+ imageFile.name, function(err) {

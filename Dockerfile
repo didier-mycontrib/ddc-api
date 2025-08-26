@@ -21,4 +21,5 @@ ENV PORT=8231
 #MONGODB_URL is now replaced by MONGODB_HOSTNAME + ... + ...
 
 EXPOSE 8231
+#VOLUME ["/usr/src/app/html/mnt_posts"] #with images subdirectory
 CMD [ "npm", "start" ]
