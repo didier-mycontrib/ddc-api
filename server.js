@@ -41,8 +41,9 @@ app.use(function(req, res, next) {
 //de simples renvois des fichiers statiques
 //du répertoire "./html"
 app.use('/html', express.static(__dirname+"/html"));
-app.use('/res-api/v1/public/posts', express.static(__dirname+"/html/posts"));
-app.use('/res-api/v1/public/posts', express.static(__dirname + "/html/mnt_posts"));
+app.use('/res-api/v1/public/posts', express.static(__dirname + "/html/mnt_posts"));//first attempt (priority)
+app.use('/res-api/v1/public/posts', express.static(__dirname+"/html/posts"));//second attempt (secondary)
+
 app.get('/', function(req , res ) {
   res.redirect('/html/index.html');
 });

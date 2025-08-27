@@ -6,7 +6,7 @@ import publicationDao from './publication-dao-mongoose.js';
 
 
 import { statusCodeFromEx , nullOrEmptyObject , build_api_uris , 
-	    addDefaultPrivateReInitRoute , addRedirectPublicToPrivateRoute,
+	    addDefaultPrivateReInitRoute , addRedirectPublicToPrivateRoute,addRedirectPrivateToPublicRoute,
 	    addDefaultGetByIdRoute ,addDefaultGetByCriteriaRoute ,
 	    addDefaultDeleteRoute , addDefaultPostRoute , addDefaultPutRoute} from "./generic-express-util.js";
 
@@ -20,7 +20,8 @@ const api_uris = build_api_uris(api_name,api_version,main_entities_name);
 apiRouter.route('/news-api/private/reinit')
 addDefaultPrivateReInitRoute(apiRouter,publicationDao,api_uris)
 
-
+addRedirectPrivateToPublicRoute(apiRouter,"/news-api/v1/private/publications",["get"])
+addRedirectPrivateToPublicRoute(apiRouter,"/news-api/v1/private/publications",["get"])
 
 //exemple URL: .../news-api/public/publication/6213be90e247ac2221112840
 /**
