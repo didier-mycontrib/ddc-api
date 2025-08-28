@@ -59,7 +59,7 @@ if(withoutAuth!="yes"){
 }
 
 const options_res_api = {
-  definition: {   openapi: '3.0.0',  info: { title: 'res-api', version: '1.0.0',   }  },
+  definition: {   openapi: '3.0.0',  info: { title: 'res-api', version: 'v1',   }  },
   apis: ['ressource-api-routes.js','ressource-dao-mongoose.js'], // files containing annotations with @openapi
 };
 const ressourceSwaggerSpec = swaggerJSDoc(options_res_api);
@@ -67,7 +67,7 @@ const ressourceSwaggerSpec = swaggerJSDoc(options_res_api);
 app.use('/res-api/v1/api-docs', swaggerUi.serve,(...args) => swaggerUi.setup(ressourceSwaggerSpec)(...args));
 
 const options_news_api = {
-  definition: {   openapi: '3.0.0',  info: { title: 'news-api', version: '1.0.0',   }  },
+  definition: {   openapi: '3.0.0',  info: { title: 'news-api', version: 'v1',   }  },
   apis: ['publication-api-routes.js','publication-dao-mongoose.js'], // files containing annotations with @openapi
 };
 const newsSwaggerSpec = swaggerJSDoc(options_news_api);
