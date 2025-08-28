@@ -1,4 +1,12 @@
+en mode dev,
+URL = http://localhost:8231/html/index.html
+et    http://localhost:8231/res-api/v1/public/ressources
+et    http://localhost:8231/news-api/v1/public/publications
 
+en mode prod:
+URL = https://www.d-defrance.fr/ddc-api-html/index.html
+et    https://www.d-defrance.fr/res-api/v1/public/ressources
+et    https://www.d-defrance.fr/news-api/v1/public/publications
 =======
 utilise une base mongoDB "ddc_db".
 
