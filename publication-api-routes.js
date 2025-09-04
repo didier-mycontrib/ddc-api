@@ -21,7 +21,6 @@ apiRouter.route('/news-api/private/reinit')
 addDefaultPrivateReInitRoute(apiRouter,publicationDao,api_uris)
 
 addRedirectPrivateToPublicRoute(apiRouter,"/news-api/v1/private/publications",["get"])
-addRedirectPrivateToPublicRoute(apiRouter,"/news-api/v1/private/publications",["get"])
 
 //exemple URL: .../news-api/public/publication/6213be90e247ac2221112840
 /**
@@ -130,7 +129,14 @@ apiRouter.route('/news-api/v1/private/upload-publication')
       let postFolderPath = "./html/mnt_posts/";
       if(imageFile){
           // Use the mv() method to place the file somewhere on your server
-          imageFile.mv(postFolderPath +"/images/"+ imageFile.name, function(err) {
+			  
+		  //OLD_vERSION, stored file_name = original name of uploaded file (client side) :
+		  // imageFile.mv(postFolderPath +"/images/"+ imageFile.name, function(err) {
+		  
+		  // NEW_VERSION , stored file_name = name in publication.fichier_image_name
+		  // c'est au coté client de choisir le valeur unique de publication.fichier_image_name
+		  // qui pourra par exemple être le nom original du fichier suffixé par suffix = (new Date()).getTime();  
+		 imageFile.mv(postFolderPath +"/images/"+ publication.fichier_image_name, function(err) {  
             if (err)
               console.log(imageFile.name + " was not upload");
             else 
@@ -139,7 +145,14 @@ apiRouter.route('/news-api/v1/private/upload-publication')
       }
 	  if(detailsFile){
 		// Use the mv() method to place the file somewhere on your server
-		detailsFile.mv(postFolderPath + detailsFile.name, function(err) {
+		
+		  //OLD_vERSION, stored file_name = original name of uploaded file (client side) :
+		 // imageFile.mv(postFolderPath +detailsFile.name, function(err) {
+		  
+		  // NEW_VERSION , stored file_name = name in publication.fichier_details_name
+		  // c'est au coté client de choisir le valeur unique de publication.fichier_details_name
+		  // qui pourra par exemple être le nom original du fichier suffixé par suffix = (new Date()).getTime();
+		detailsFile.mv(postFolderPath + publication.fichier_details_name, function(err) {
 		  if (err)
 			console.log(detailsFile.name + " was not upload");
 		  else 

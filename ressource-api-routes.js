@@ -6,7 +6,7 @@ import ressourceDao from './ressource-dao-mongoose.js';
 
 
 import { statusCodeFromEx , nullOrEmptyObject , build_api_uris , 
-	    addDefaultPrivateReInitRoute , addRedirectPublicToPrivateRoute,
+	    addDefaultPrivateReInitRoute , addRedirectPublicToPrivateRoute,addRedirectPrivateToPublicRoute,
 	    addDefaultGetByIdRoute ,addDefaultGetByCriteriaRoute ,
 	    addDefaultDeleteRoute , addDefaultPostRoute , addDefaultPutRoute} from "./generic-express-util.js";
 
@@ -18,6 +18,8 @@ const api_uris = build_api_uris(api_name,api_version,main_entities_name);
 
 //exemple URL: .../res-api/v1/private/reinit
 addDefaultPrivateReInitRoute(apiRouter,ressourceDao,api_uris)
+
+addRedirectPrivateToPublicRoute(apiRouter,"/res-api/v1/private/ressources",["get"])
 
 
 //exemple URL: .../res-api/v1/public/ressources/62139848eb02e0dc09503d4f
@@ -140,7 +142,14 @@ apiRouter.route('/res-api/v1/private/upload-ressource')
             postFolderPath = "./html/mnt_posts/images/";
           }
           // Use the mv() method to place the file somewhere on your server
-          resFile.mv(postFolderPath + resFile.name, function(err) {
+		  
+		  //OLD_vERSION, stored file_name = original name of uploaded file (client side) :
+		  //resFile.mv(postFolderPath + resFile.name, function(err) { 
+		  
+		  // NEW_VERSION , stored file_name = name in ressource.res_fic_name
+		  // c'est au coté client de choisir le valeur unique de ressource.res_fic_name
+		  // qui pourra par exemple être le nom original du fichier suffixé par suffix = (new Date()).getTime();
+          resFile.mv(postFolderPath + ressource.res_fic_name, function(err) { 
             if (err)
               console.log(resFile.name + " was not upload");
             else 
